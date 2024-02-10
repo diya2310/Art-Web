@@ -1,0 +1,202 @@
+Filter //
+search //
+download image //
+show likes in pin details //
+saved and my pins tabs //
+zoom post //
+show followers in modal //
+chat //
+
+
+TODO:
+
+	Check follow and unfollow function
+	RUn and see chat modal updating with chats
+
+
+	const followUser = async item => {
+
+		// Logic for Updating Following list in Current User Side
+		let tempFollowing = [];
+
+		await getDoc(doc(db, "users", currentUser.email))
+			.then(snapshot => {
+				tempFollowing = snapshot.data().following;
+				// console.log("TEMPFOLLOWING", tempFollowing)
+			});
+		if (tempFollowing.length > 0) {
+			tempFollowing.map(item2 => {
+				if (item2.userId == item.email) {
+					// Unfollow Process
+					let index2 = -1;
+					tempFollowing.map((x, i) => {
+						if (x.userId == item.email) index2 = i;
+					})
+					console.log("CURR ", index2)
+					if (index2 > -1) tempFollowing.splice(index2, 1)
+				} else {
+					tempFollowing.push({
+						name: item.name,
+						userId: item.email,
+						userImg: item.photoURL,
+					});
+				}
+				return null;
+			});
+		} else {
+			tempFollowing.push({
+				name: item.name,
+				userId: item.email,
+				userImg: item.photoURL
+			});
+		}
+		const value = { following: tempFollowing }
+		await updateDoc(doc(db, 'users', currUserInfo.email), value)
+			.then(resp => {
+				// toast.success(`Followed ${item.name} Successfully`)
+			}).catch((error) => {
+				toast.error(error.message)
+			})
+
+		// Logic for Updating Followers list in User Side
+		let tempFollowers = item.followers;
+
+		if (tempFollowers.length > 0) {
+			tempFollowers.map(item1 => {
+				if (item1.userId == currentUser.email) {
+					// Unfollow Process
+					let index = -1;
+					tempFollowers.map((x, i) => {
+						if (x.userId == currentUser.email) index = i;
+					})
+					console.log("USER ", index)
+					if (index > -1) {
+						tempFollowers.splice(index, 1)
+						setFollowed(false);
+					}
+				} else {
+					tempFollowers.push({
+						name: currUserInfo.name,
+						userId: currentUser?.email,
+						userImg: currUserInfo.photoURL
+					});
+					setFollowed(true);
+				}
+				return null;
+			});
+		} else {
+			tempFollowers.push({
+				name: currUserInfo.name,
+				userId: currentUser?.email,
+				userImg: currUserInfo.photoURL
+			});
+			setFollowed(true);
+		}
+
+		const newValue = { followers: tempFollowers }
+		await updateDoc(doc(db, 'users', item.email), newValue)
+			.then(resp => {
+				const mssg = followed ? "You unfollowed" : "You started following"
+				toast.success(`${mssg} ${item.name}`)
+			}).catch((error) => {
+				toast.error(error.message)
+			})
+	}
+
+	const getFollowStatus = followers => {
+		let status = false;
+		followers.map(item => {
+			if (item.userId === currentUser?.email) {
+				status = true;
+			} else {
+				status = false;
+			}
+			return null
+		});
+		return status;
+	}
+
+
+	SIngle
+
+	const followUser = async item => {
+
+		// Logic for Updating Following list in Current User Side
+		let tempFollowing = [];
+
+		await getDoc(doc(db, "users", currentUser.email))
+			.then(snapshot => {
+				tempFollowing = snapshot.data().following;
+				// console.log("TEMPFOLLOWING", tempFollowing)
+
+				if (tempFollowing.length > 0) {
+					tempFollowing.map(item2 => {
+						if (item2 == item.email) {
+							// Unfollow Process
+							let index2 = tempFollowing.indexOf(item.email);
+							console.log("CURR INDEX", index2)
+							if (index2 > -1) {
+								let con;
+								con = tempFollowing.splice(index2, 1);
+								console.log(con)
+								setFollowed(false);
+							} 
+							// else tempFollowing.push(item.email)
+						} else tempFollowing.push(item.email)
+						return null;
+					});
+				} else tempFollowing.push(item.email)
+
+				const value = { following: tempFollowing }
+				updateDoc(doc(db, 'users', currUserInfo.email), value)
+					.then(resp => {
+						// toast.success(`Followed ${item.name} Successfully`)
+					}).catch((error) => {
+						toast.error(error.message)
+					})
+
+				// Logic for Updating Followers list in User Side
+				let tempFollowers = item.followers;
+
+				if (tempFollowers.length > 0) {
+					tempFollowers.map(item1 => {
+						if (item1 == currentUser.email) {
+							// Unfollow Process
+							let index = tempFollowers.indexOf(currentUser.email);
+							if (index > -1) {
+								tempFollowers.splice(index, 1);
+								setFollowed(false);
+							}
+							else tempFollowers.push(index, 1);
+						} else {
+							tempFollowers.push(currentUser.email);
+							setFollowed(true);
+						}
+						return null;
+					});
+				} else {
+					tempFollowers.push(currentUser.email);
+					setFollowed(true);
+				}
+
+				const newValue = { followers: tempFollowers }
+				updateDoc(doc(db, 'users', item.email), newValue)
+					.then(resp => {
+						const mssg = followed ? "You unfollowed" : "You started following"
+						toast.success(`${mssg} ${item.name}`)
+					}).catch((error) => {
+						toast.error(error.message)
+					})
+			});
+
+	}
+
+
+FOLLOW FEATURE :
+
+	Make sure showing the follow feature with 2 accounts which ur creating infront of them.
+	Click once Follow amoong that 2 accounts created and same as with unfollow.
+
+LIKE FEATURE :
+
+	

@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* > * {
+  font-family: 'Poppins',sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+.blueBtn {
+  background-color: rgb(29 78 216);
+  color: white;
+  padding: 10px 15px;
+  font-size: large;
+  font-weight: 600;
+  border-radius: 0.5rem;
+}
+.blueBtn:hover { background-color:rgb(30 64 175); transition: all 0.5s; }
+.blueBtn:focus { outline: 2px solid transparent; outline-offset: 2px; }
+
+.pinDetailBtn {
+  cursor: pointer;
+  border-radius: 9999px;
+  font: bold;
+  font-size: 50px;
+  padding: 8px 12px;
+}
+.pinDetailBtn:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(229 231 235 / var(--tw-bg-opacity));
+  color: rgb(0 0 0 / var(--tw-text-opacity));
+  transition: all 0.5s;
+}
+
+.saveBtn {
+  --tw-bg-opacity: 1;
+  background-color: rgb(220 38 38 / var(--tw-bg-opacity));
+  padding: 8px 16px;
+  border-radius: 9999px;
+  font-size: 22px;
+  color: white;
+}
+.saveBtn:hover {
+  background-color: rgb(153 27 27);
+  transition: all 0.5s;
+}
+
+.savedBtn {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 0 0 / var(--tw-bg-opacity));
+  padding: 8px 16px;
+  border-radius: 9999px;
+  font-size: 22px;
+  color: white;
+}
+.savedBtn:hover { background-color: rgb(166, 172, 190); transition: all 0.5s; }
+
+/* For Zooming the Images styles */
+#lens{
+	z-index: 2;
+	position: absolute;
+	height: 120px;
+	width: 120px;
+	border:2px solid black;
+	background-repeat: no-repeat;
+	cursor: none;
+}
+#img-container{
+	z-index: 1;
+	max-width: 1000px;
+	position: relative;
+}
